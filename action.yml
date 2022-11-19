@@ -1,4 +1,4 @@
-name: Ansible playbook runner
+name: Ansible Playwright
 description: Execute Ansible playbook on selected hosts
 branding:
   color: red
