@@ -8,7 +8,7 @@ Should work on any OS, if `ansible-playbook` command is available in `PATH`.
 
 ```yaml
 - name: Run playbook
-  uses: aimerib/ansible-runner@v2
+  uses: aimerib/ansible-playwright@v2
   with:
     # Required, playbook filepath
     playbook: deploy.yml
