@@ -16,6 +16,9 @@ inputs:
   key:
     description: SSH private key used to connect to the host
     required: false
+  private-key:
+    description: SSH private key used to connect to the host
+    required: false
   inventory:
     description: Custom content to write into hosts
     required: false

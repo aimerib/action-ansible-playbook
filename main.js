@@ -10,6 +10,7 @@ async function main() {
         const requirements = core.getInput("requirements")
         const directory = core.getInput("directory")
         const key = core.getInput("key")
+        const private_key = core.getInput("private-key")
         const inventory = core.getInput("inventory")
         const vaultPassword = core.getInput("vault_password")
         const knownHosts = core.getInput("known_hosts")
@@ -48,6 +49,14 @@ async function main() {
             core.saveState("keyFile", keyFile)
             cmd.push("--key-file")
             cmd.push(keyFile)
+        }
+
+        if (private_key) {
+            const privateKeyFile = ".ansible_key"
+            fs.writeFileSync(privateKeyFile, private_key + os.EOL, { mode: 0600 })
+            core.saveState("privateKeyFile", privateKeyFile)
+            cmd.push("--private-key")
+            cmd.push(privateKeyFile)
         }
 
         if (inventory) {
