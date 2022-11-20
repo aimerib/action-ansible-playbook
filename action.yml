@@ -34,9 +34,6 @@ inputs:
   options:
     description: Extra options that should be passed to ansible-playbook command
     required: false
-  extra_vars:
-    description: An array of extra variables to be passed to the ansible command
-    required: false
   sudo:
     description: Set to "true" if root is required for running your playbook
     required: false

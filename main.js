@@ -1,6 +1,7 @@
 const core = require('@actions/core')
 const exec = require('@actions/exec')
 const yaml = require('yaml')
+const io = require('@actions/io')
 const fs = require('fs')
 const os = require('os')
 
@@ -16,7 +17,6 @@ async function main() {
         const vaultPassword = core.getInput("vault_password")
         const knownHosts = core.getInput("known_hosts")
         const options = core.getInput("options")
-        const extraVars = core.getInput("extra-vars")
         const sudo    = core.getInput("sudo")
         const noColor = core.getInput("no_color")
 
@@ -96,15 +96,6 @@ async function main() {
             cmd.unshift("sudo", "-E", "env", `PATH=${process.env.PATH}`)
         }
 
-        if (extraVars) {
-            // iterate over extraVars array and add each one to the command
-            // using the --extra-vars flag
-            for (const extraVar of extraVars) {
-                cmd.push("--extra-vars")
-                cmd.push(extraVar)
-            }
-        }
-
         if (noColor) {
             process.env.ANSIBLE_NOCOLOR = "True"
         } else {
@@ -112,7 +103,8 @@ async function main() {
         }
 
         let output = ""
-        await exec.exec(cmd.join(' '), null, {
+        let exit_code = 0
+        await (exit_code = exec.exec(cmd.join(' ')), null, {
           listeners: {
             stdout: function(data) {
               output += data.toString()
@@ -123,7 +115,9 @@ async function main() {
           }
         })
         core.setOutput("output", output)
+        core.setOutput("exit_code", exit_code)
     } catch (error) {
+        core.setOutput("error_message", error.message)
         core.setFailed(error.message)
     }
 }
