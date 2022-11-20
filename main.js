@@ -9,6 +9,7 @@ async function main() {
         const playbook = core.getInput("playbook", { required: true })
         const requirements = core.getInput("requirements")
         const directory = core.getInput("directory")
+        const user = core.getInput("user")
         const key = core.getInput("key")
         const private_key = core.getInput("private-key")
         const inventory = core.getInput("inventory")
@@ -41,6 +42,11 @@ async function main() {
                 if (requirementsObject.collections)
                     await exec.exec("ansible-galaxy", ["collection", "install", "-r", requirements])
             }
+        }
+
+        if (user) {
+            cmd.push("--user")
+            cmd.push(user)
         }
 
         if (key) {
