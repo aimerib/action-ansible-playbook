@@ -16,6 +16,7 @@ async function main() {
         const vaultPassword = core.getInput("vault_password")
         const knownHosts = core.getInput("known_hosts")
         const options = core.getInput("options")
+        const extraVars = core.getInput("extra-vars")
         const sudo    = core.getInput("sudo")
         const noColor = core.getInput("no_color")
 
@@ -93,6 +94,15 @@ async function main() {
 
         if (sudo) {
             cmd.unshift("sudo", "-E", "env", `PATH=${process.env.PATH}`)
+        }
+
+        if (extraVars) {
+            // iterate over extraVars array and add each one to the command
+            // using the --extra-vars flag
+            for (const extraVar of extraVars) {
+                cmd.push("--extra-vars")
+                cmd.push(extraVar)
+            }
         }
 
         if (noColor) {
