@@ -103,8 +103,7 @@ async function main() {
         }
 
         let output = ""
-        let exit_code = 0
-        await (exit_code = exec.exec(cmd.join(' ')), null, {
+        await exec.exec(cmd.join(' '), null, {
           listeners: {
             stdout: function(data) {
               output += data.toString()
@@ -115,9 +114,7 @@ async function main() {
           }
         })
         core.setOutput("output", output)
-        core.setOutput("exit_code", exit_code)
-    } catch (error) {
-        core.setOutput("error_message", error.message)
+     } catch (error) {
         core.setFailed(error.message)
     }
 }
